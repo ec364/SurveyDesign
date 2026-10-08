@@ -4,8 +4,25 @@ format: html
 editor: visual
 ---
 
-## Survey Design Methodology
+## Introduction
 
-Our project aims to survey the the primary faculty across Trinity College. We chose to keep our sampling frame to primary faculty because we did not want to include secondary faculty that might be on different tracks (clean this up).
+Our project aims to survey the the primary and joint faculty appointments across Trinity College. We excluded secondary and other types of appointments to maintain and consistent and stronger definition of departmental and program membership. We also want to note that this design choice means an individual could appear more than once if they have multiple primary or joint positions in Trinity College. We chose this method because we determined the time required to identify and resolve overlapping appointments would be substantial relative to the anticipated benefits for this project.
 
-We first started by looking at the website for Trinity College of Arts and Science (<https://trinity.duke.edu/>). Here, they break down their departments into three strata: Arts & Humanities, Natural Sciences, and Social Science.
+## Sampling Design
+
+We used a stratified, one-stage cluster sampling design with probability proportional to size selection of departments and programs. We treated Trinity College's three academic divisions as strata and departments and programs as primary sampling units (PSUs). Within each stratum, we selected departments and programs with probabilities proportional to their numbers of primary and joint faculty appointments. After selecting departments and programs, we collected information on all eligible faculty appointments within the selected clusters.
+
+Let $h = 1, 2, 3$ index the three strata, and let $i = 1, \ldots, N_h$ index the departments and programs within stratum $h$. We define the following notation:
+
+-   $N_h$: Total number of departments and programs in stratum $h$.
+-   $n_h$: Number of departments and programs sampled from stratum $h$.
+-   $M_{hi}$: Number of primary and joint faculty appointments in department or program $i$ of stratum $h$.
+-   $M_{h0} = \sum_{i=1}^{N_h} M_{hi}$: Total number of eligible faculty appointments in stratum $h$.
+-   $\pi_{hi}$: Probability that department or program $i$ in stratum $h$ is included in the sample.
+-   $w_{hi}$: Sampling weight assigned to each eligible faculty appointment in department or program $i$ of stratum $h$.
+
+## Data Collection
+
+We first started by looking at the website for Trinity College of Arts and Science (<https://trinity.duke.edu/>). Here, they break down their departments and programs into three strata: Arts & Humanities, Natural Sciences (<https://trinity.duke.edu/natural-sciences>), and Social Sciences (<https://trinity.duke.edu/social-sciences>). We decided to include every listed department and program in our sampling frame. Psychology and Neuroscience is listed in both Natural Sciences and Social Science, but we decided to only list it as in Natural Sciences as strata must be mutually exclusive for our proposed design.
+
+Next, we will explain our data collection process for collecting department/program-level measures of size. From the Scholars\@Duke website, we went to the Schools/Institutes page (<https://scholars.duke.edu/organizations>). Here, there are links to the Scholars\@Duke pages for each department and program we recorded from the process above. Within these pages, there is a section for Primary & Joint Appointments that lists the faculty and total count. Here is an example page for the department of African and African American Studies: <https://scholars.duke.edu/organization/50413712/people>. The total listed on these webpages is what we used for the totals for each department and program's number of primary and joint faculty positions.
