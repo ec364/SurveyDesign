@@ -10,7 +10,7 @@ Our project aims to survey the the primary and joint faculty appointments across
 
 ## Sampling Design
 
-We used a stratified, one-stage cluster sampling design with probability proportional to size selection of departments and programs. We treated Trinity College's three academic divisions as strata and departments and programs as primary sampling units (PSUs). Within each stratum, we selected departments and programs with probabilities proportional to their numbers of primary and joint faculty appointments. After selecting departments and programs, we collected information on all eligible faculty appointments within the selected clusters.
+We used a stratified, one-stage cluster sampling design with probability proportional to size (PPS) selection of departments and programs. We treated Trinity College's three academic divisions as strata and departments and programs as primary sampling units (PSUs). Within each stratum, we selected departments and programs with probabilities proportional to their numbers of primary and joint faculty appointments. After selecting departments and programs, we collected information on all eligible faculty appointments within the selected clusters.
 
 Let $h = 1, 2, 3$ index the three strata, and let $i = 1, \ldots, N_h$ index the departments and programs within stratum $h$. We define the following notation:
 
@@ -20,6 +20,21 @@ Let $h = 1, 2, 3$ index the three strata, and let $i = 1, \ldots, N_h$ index the
 -   $M_{h0} = \sum_{i=1}^{N_h} M_{hi}$: Total number of eligible faculty appointments in stratum $h$.
 -   $\pi_{hi}$: Probability that department or program $i$ in stratum $h$ is included in the sample.
 -   $w_{hi}$: Sampling weight assigned to each eligible faculty appointment in department or program $i$ of stratum $h$.
+
+Under fixed-size PPS sampling without replacement, the inclusion probability for department or program $i$ in stratum $h$ is
+
+$$
+\pi_{hi} = \frac{n_h M_{hi}}{M_{h0}}.
+$$
+
+Because we use one-stage cluster sampling, all eligible faculty appointments within a selected department or program are included. Therefore, the sampling weight for each appointment is
+
+$$
+w_{hi} = \frac{1}{\pi_{hi}}
+       = \frac{M_{h0}}{n_h M_{hi}}.
+$$
+
+We are choosing to sample $n_h = 3$ from each stratum $h$.
 
 ## Data Collection
 
