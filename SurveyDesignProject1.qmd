@@ -4,27 +4,8 @@ format: html
 editor: visual
 ---
 
-## Quarto
+## Survey Design Methodology
 
-Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+Our project aims to survey the the primary faculty across Trinity College. We chose to keep our sampling frame to primary faculty because we did not want to include secondary faculty that might be on different tracks (clean this up).
 
-## Running Code
-
-When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
-
-```{r}
-1 + 1
-```
-
-You can add options to executable code like this
-
-```{r}
-#| echo: false
-2 * 2
-```
-
-The `echo: false` option disables the printing of code (only output is displayed).
-
-Testing testing testing
-
-why isnt it updating
+We first started by looking at the website for Trinity College of Arts and Science (<https://trinity.duke.edu/>). Here, they break down their departments into three strata: Arts & Humanities, Natural Sciences, and Social Science.
