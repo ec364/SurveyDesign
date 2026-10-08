@@ -147,3 +147,26 @@ knitr::kable(
   row.names = FALSE
 )
 ```
+
+Determining Numbers For Proportional Allocation and Deciding SRS
+
+```{r}
+#figure out proportional allocation 
+set.seed(314)
+
+n = 125 #number of people we are sampling
+n_ArtHum = n * 450 / 1153 #49 
+n_NatSci = n * 421 / 1153 #46
+n_SocSci = n * 282 / 1153 #30 this one I rounded down so that integers add to 125
+
+#generating random numbers 
+
+sample(c(1:450), 49) |>
+  sort() #for arts and humanities
+sample(c(1:421), 46) |>
+  sort() #for natural sciences
+sample(c(1:282), 30) |>
+  sort() #for social science
+
+
+```
