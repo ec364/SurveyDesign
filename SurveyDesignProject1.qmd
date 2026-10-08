@@ -1,6 +1,6 @@
 ---
 title: "Project1"
-format: html
+format: pdf
 editor: visual
 ---
 
@@ -10,9 +10,7 @@ Our project aims to survey the the primary and joint faculty appointments across
 
 ## Sampling Design
 
-We used a stratified, one-stage cluster sampling design with probability proportional to size (PPS) selection of departments and programs. We treated Trinity College's three academic divisions as strata and departments and programs as primary sampling units (PSUs). Within each stratum, we selected departments and programs with probabilities proportional to their numbers of primary and joint faculty appointments. After selecting departments and programs, we collected information on all eligible faculty appointments within the selected clusters.
-
-Let $h = 1, 2, 3$ index the three strata, and let $i = 1, \ldots, N_h$ index the departments and programs within stratum $h$. We define the following notation:
+Let $h = 1, 2, 3$ index the three strata, where $h = 1$ corresponds to Arts & Humanities, $h = 2$ to Natural Sciences, and $h = 3$ to Social Sciences. Within each stratum $h$, let $i = 1, \ldots, N_h$ index the departments and programs. We define the following notation:
 
 -   $N_h$: Total number of departments and programs in stratum $h$.
 -   $n_h$: Number of departments and programs sampled from stratum $h$.
@@ -20,29 +18,6 @@ Let $h = 1, 2, 3$ index the three strata, and let $i = 1, \ldots, N_h$ index the
 -   $M_{h0} = \sum_{i=1}^{N_h} M_{hi}$: Total number of eligible faculty appointments in stratum $h$.
 -   $\pi_{hi}$: Probability that department or program $i$ in stratum $h$ is included in the sample.
 -   $w_{hi}$: Sampling weight assigned to each eligible faculty appointment in department or program $i$ of stratum $h$.
-
-Under fixed-size PPS sampling without replacement, the inclusion probability for department or program $i$ in stratum $h$ is
-
-$$
-\pi_{hi} = \frac{n_h M_{hi}}{M_{h0}}.
-$$
-
-Because we use one-stage cluster sampling, all eligible faculty appointments within a selected department or program are included. Therefore, the sampling weight for each appointment is
-
-$$
-w_{hi} = \frac{1}{\pi_{hi}}
-       = \frac{M_{h0}}{n_h M_{hi}}.
-$$
-
-We are choosing to sample $n_h = 3$ from each stratum $h$.
-
-## Data Collection
-
-We first started by looking at the website for Trinity College of Arts and Science (<https://trinity.duke.edu/>). Here, they break down their departments and programs into three strata: Arts & Humanities, Natural Sciences (<https://trinity.duke.edu/natural-sciences>), and Social Sciences (<https://trinity.duke.edu/social-sciences>). We decided to include every listed department and program in our sampling frame. Psychology and Neuroscience is listed in both Natural Sciences and Social Science, but we decided to only list it as in Natural Sciences as strata must be mutually exclusive for our proposed design.
-
-Next, we will explain our data collection process for collecting department/program-level measures of size. From the Scholars\@Duke website, we went to the Schools/Institutes page (<https://scholars.duke.edu/organizations>). Here, there are links to the Scholars\@Duke pages for each department and program we recorded from the process above. Within these pages, there is a section for Primary & Joint Appointments that lists the faculty and total count. Here is an example page for the department of African and African American Studies: <https://scholars.duke.edu/organization/50413712/people>. The total listed on these webpages is what we used for the totals for each department and program's number of primary and joint faculty positions.
-
-## Preparing Data
 
 ```{r}
 
@@ -66,9 +41,49 @@ stratum_totals <- aggregate(
   FUN = sum
 )
 
-M_ArtHum <- stratum_totals$Primary__Joint_Faculty[stratum_totals$Stratum == "ArtHum"]
-M_NatSci <- stratum_totals$Primary__Joint_Faculty[stratum_totals$Stratum == "NatSci"]
-M_SocSci <- stratum_totals$Primary__Joint_Faculty[stratum_totals$Stratum == "SocSci"]
+M_ArtHum0 <- stratum_totals$Primary__Joint_Faculty[stratum_totals$Stratum == "ArtHum"]
+M_NatSci0 <- stratum_totals$Primary__Joint_Faculty[stratum_totals$Stratum == "NatSci"]
+M_SocSci0 <- stratum_totals$Primary__Joint_Faculty[stratum_totals$Stratum == "SocSci"]
 
-M <- M_ArtHum + M_NatSci + M_SocSci
+M <- M_ArtHum0 + M_NatSci0 + M_SocSci0
+```
+
+We used a stratified simple random sample design with optimal allocation. We treated Trinity College's three academic divisions as strata and departments. Within each stratum, we know the total number of primary and joint appointments for each department and program. Thus, we can treat the sum of appointments for each stratum as an index from $1$ to \$\$\$
+
+## Data Collection
+
+We first started by looking at the website for Trinity College of Arts and Science (<https://trinity.duke.edu/>). Here, they break down their departments and programs into three strata: Arts & Humanities, Natural Sciences (<https://trinity.duke.edu/natural-sciences>), and Social Sciences (<https://trinity.duke.edu/social-sciences>). We decided to include every listed department and program in our sampling frame. Psychology and Neuroscience is listed in both Natural Sciences and Social Science, but we decided to only list it as in Natural Sciences as strata must be mutually exclusive for our proposed design.
+
+Next, we will explain our data collection process for collecting department/program-level measures of size. From the Scholars\@Duke website, we went to the Schools/Institutes page (<https://scholars.duke.edu/organizations>). Here, there are links to the Scholars\@Duke pages for each department and program we recorded from the process above. Within these pages, there is a section for Primary & Joint Appointments that lists the faculty and total count. Here is an example page for the department of African and African American Studies: <https://scholars.duke.edu/organization/50413712/people>. The total listed on these webpages is what we used for the totals for each department and program's number of primary and joint faculty positions.
+
+## Preparing Data
+
+```{r}
+
+
+ArtHum <- subset(dept_data, Stratum == "ArtHum")
+
+ArtHum$end_index <- cumsum(ArtHum$Primary__Joint_Faculty)
+
+ArtHum$start_index <- ArtHum$end_index -
+                      ArtHum$Primary__Joint_Faculty + 1
+
+ArtHum_table <- ArtHum[, c(
+  "Department",
+  "Primary__Joint_Faculty",
+  "start_index",
+  "end_index"
+)]
+
+knitr::kable(
+  ArtHum_table,
+  col.names = c(
+    "Department",
+    "Faculty",
+    "Start Index",
+    "End Index"
+  ),
+  caption = "Arts and Humanities Faculty Appointments",
+  row.names = FALSE
+)
 ```
