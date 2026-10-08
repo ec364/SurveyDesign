@@ -41,3 +41,34 @@ We are choosing to sample $n_h = 3$ from each stratum $h$.
 We first started by looking at the website for Trinity College of Arts and Science (<https://trinity.duke.edu/>). Here, they break down their departments and programs into three strata: Arts & Humanities, Natural Sciences (<https://trinity.duke.edu/natural-sciences>), and Social Sciences (<https://trinity.duke.edu/social-sciences>). We decided to include every listed department and program in our sampling frame. Psychology and Neuroscience is listed in both Natural Sciences and Social Science, but we decided to only list it as in Natural Sciences as strata must be mutually exclusive for our proposed design.
 
 Next, we will explain our data collection process for collecting department/program-level measures of size. From the Scholars\@Duke website, we went to the Schools/Institutes page (<https://scholars.duke.edu/organizations>). Here, there are links to the Scholars\@Duke pages for each department and program we recorded from the process above. Within these pages, there is a section for Primary & Joint Appointments that lists the faculty and total count. Here is an example page for the department of African and African American Studies: <https://scholars.duke.edu/organization/50413712/people>. The total listed on these webpages is what we used for the totals for each department and program's number of primary and joint faculty positions.
+
+## Preparing Data
+
+```{r}
+
+dept_data <- read.csv("Project_1_Sizes.csv")
+
+dept_counts <- aggregate(
+  Primary__Joint_Faculty ~ Stratum,
+  data = dept_data,
+  FUN = length
+)
+
+N_ArtHum <- dept_counts$Primary__Joint_Faculty[dept_counts$Stratum == "ArtHum"]
+N_NatSci <- dept_counts$Primary__Joint_Faculty[dept_counts$Stratum == "NatSci"]
+N_SocSci <- dept_counts$Primary__Joint_Faculty[dept_counts$Stratum == "SocSci"]
+
+N <- N_ArtHum + N_NatSci + N_SocSci
+
+stratum_totals <- aggregate(
+  Primary__Joint_Faculty ~ Stratum,
+  data = dept_data,
+  FUN = sum
+)
+
+M_ArtHum <- stratum_totals$Primary__Joint_Faculty[stratum_totals$Stratum == "ArtHum"]
+M_NatSci <- stratum_totals$Primary__Joint_Faculty[stratum_totals$Stratum == "NatSci"]
+M_SocSci <- stratum_totals$Primary__Joint_Faculty[stratum_totals$Stratum == "SocSci"]
+
+M <- M_ArtHum + M_NatSci + M_SocSci
+```
