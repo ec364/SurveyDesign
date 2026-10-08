@@ -83,7 +83,67 @@ knitr::kable(
     "Start Index",
     "End Index"
   ),
-  caption = "Arts and Humanities Faculty Appointments",
+  caption = "Arts & Humanities Faculty Appointments",
+  row.names = FALSE
+)
+```
+
+```{r}
+
+NatSci <- subset(dept_data, Stratum == "NatSci")
+
+NatSci$end_index <- cumsum(NatSci$Primary__Joint_Faculty)
+
+NatSci$start_index <- NatSci$end_index -
+                      NatSci$Primary__Joint_Faculty + 1
+
+NatSci_table <- NatSci[, c(
+  "Department",
+  "Primary__Joint_Faculty",
+  "start_index",
+  "end_index"
+)]
+
+
+knitr::kable(
+  NatSci_table,
+  col.names = c(
+    "Department",
+    "Faculty",
+    "Start Index",
+    "End Index"
+  ),
+  caption = "Natural Science Faculty Appointments",
+  row.names = FALSE
+)
+```
+
+```{r}
+
+SocSci <- subset(dept_data, Stratum == "SocSci")
+
+SocSci$end_index <- cumsum(SocSci$Primary__Joint_Faculty)
+
+SocSci$start_index <- SocSci$end_index -
+                      SocSci$Primary__Joint_Faculty + 1
+
+SocSci_table <- SocSci[, c(
+  "Department",
+  "Primary__Joint_Faculty",
+  "start_index",
+  "end_index"
+)]
+
+
+knitr::kable(
+  SocSci_table,
+  col.names = c(
+    "Department",
+    "Faculty",
+    "Start Index",
+    "End Index"
+  ),
+  caption = "Social Science Faculty Appointments",
   row.names = FALSE
 )
 ```
