@@ -15,13 +15,36 @@ For this project, we chose to use stratified sampling. Let $h = 1, 2, 3$ index t
 
 -   $N_h$: Total number of faculty members in stratum $h$.
 -   $n_h$: Number of faculty members sampled from stratum $h$.
+-   $N$: Total number of faculty members in population
+-   $H$: Total number of stratum, 3.
 -   $Y_{hi}$: Survey variable for faculty i in stratum i.
--   $\pi_{hi}$: Probability that department or program $i$ in stratum $h$ is included in the sample.
--   $w_{hi}$: Sampling weight assigned to each eligible faculty appointment in department or program $i$ of stratum $h$.
+-   $y_{hi}$: Sampled survey variable for faculty i in stratum i.
+-   $t_{hy}$ = $\sum_{i=1}^{N_{h}}Y_{hi}$, total in stratum $h$.
+-   $\bar{Y_{h}}$ = population mean in stratum h.
+-   $\bar{y_{h}}$ = sample mean in stratum h.
+-   $t_{y}$ is population total
+-   $\pi_{hi}$= $\frac{n_{h}}{N_{h}}$, probability that faculty $i$ in stratum $h$ is included in the sample
 
-**WHAT IS THE RELEVANCE OF DEFINING ALL THESE VARIABLES?**
+We use a Horvitz Thompson Estimator to calculate estimates in our survey. For a stratified sample, the Horvitz Thompson Estimator for the mean is. This estimator is calculated for us using the survey package available in r.
 
-Prior to deciding on stratified sampling with proportional allocation, we considered other designs.
+$$
+\hat{\bar{Y}}_{\mathrm{HT}}
+=
+\frac{1}{N}\hat{t}_{y,\mathrm{HT}}
+=
+\frac{1}{N}
+\sum_{h=1}^{H}
+\sum_{i= 1}^{n_{h}}
+\frac{y_{hi}}{\pi_{hi}}
+=
+\frac{1}{N}
+\sum_{h=1}^{H}
+N_h\bar{y}_h
+$$
+
+**WRITE ABOUT THE RATIO FOR MISSING DATA?**
+
+Prior to deciding on stratified sampling with proportional allocation, we considered other designs. Our primary goal was to **ADD PRIMARY GOALS.**
 
 1.  Cluster sampling with probability proportional to size - **WRITE *CONSIDERATIONS REASONS FOR REJECTIONS HERE.***
 2.  Simple Random Sampling - **WRITE *CONSIDERATIONS REASONS FOR REJECTIONS HERE.***
@@ -57,6 +80,8 @@ We first started by looking at the website for Trinity College of Arts and Scien
 Our data collection process for collecting department/program-level measures of size is done from the Scholars\@Duke website. From the Scholars\@Duke website, we went to the Schools/Institutes page (<https://scholars.duke.edu/organizations>). Here, there are links to the Scholars\@Duke pages for each department and program we recorded from the process above. Within these pages, there is a section for Primary & Joint Appointments that lists the faculty and total count. Here is an example page for the department of African and African American Studies: <https://scholars.duke.edu/organization/50413712/people>. The total listed on these webpages is what we used for the totals for each department and program's number of primary and joint faculty positions.
 
 Next, to take a simple random sample within each stratum, we assigned every faculty member in each stratum an index number. Index numbers were assigned sequentially and alphabetically for each department within a strata to help with indexing later on. For example in the Arts and Humanities stratum, the Arts, Art History & Visual Media Studies department appears first alphabetically, and their faculty members were indexed 1-44, the Writings and Rhetoric Program appears last alphabetically, and their faculty members were indexed 420-450 (out of 450 total faculty members in the Arts and Humanities stratum. Index increased from left to right, bottom to top on the department page. For the [Arts, Art History & Visual Media Studies department](https://scholars.duke.edu/organization/50000493/people), this meant Stanley Abe was 1, Mark Antliff was 2, and Carla M. Antonaccio was 3.This was done for all strata. A simple random sample was taken using the sample() function in r on a vector of numbers sequenced to the stratum population.
+
+Within our data frame, we included a column for the weights and population correction factor. These columns are needed for the survey package to calculate estimates. The weights are calculated as $\frac{1}{\pi_{hi}}$. The populations are equal to $N_{h}$.
 
 ## Making Index Reference Tables
 
@@ -152,6 +177,8 @@ knitr::kable(
 
 ## Determining Proportional Allocation and Simple Random Sample
 
+In proportional allocation $\frac{n_{h}}{n} \approx \frac{N_{h}}{N}$. We plug in the known values to determine $n_{h}$.
+
 ```{r}
 #figure out proportional allocation 
 set.seed(314)
@@ -173,6 +200,13 @@ sample(c(1:282), 30) |>
 
 ```
 
+Our sampled data can be found here
+
+```{r}
+#import the data 
+Project_1_Info <- read_csv("Project_1_Info - Sheet1(1).csv") 
+```
+
 ## Results
 
 ```{r, eval=FALSE}
@@ -180,9 +214,6 @@ sample(c(1:282), 30) |>
 #importing packages
 library(tidyverse)
 library(survey)
-
-#import the data 
-Project_1_Info <- read_csv("Project_1_Info - Sheet1(1).csv") 
 
 #Adding in Indicator Variables for Missing Data 
 Clean_Project_1_Info <- Project_1_Info |> 
