@@ -1,5 +1,6 @@
 ---
 title: "Project1"
+subtitle: Erin Chen and Ricardo Urena
 format: pdf
 editor: visual
 ---
