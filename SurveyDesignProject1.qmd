@@ -202,24 +202,27 @@ des = svydesign(~1,
 
 #What is an estimate of the fraction of faculty who are women? 
 svymean(~Women, design = des) 
+confint(svymean(~Women, design = des))
 
 #What fraction of faculty have at least one grant that is ongoing in 2026?
 svymean(~CurrentGrant, design = des) 
+confint(svymean(~CurrentGrant, design = des))
 
 #Among faculty who have a Ph.D. degree, what is the average number of years since they received the Ph.D. degree?
 svyratio(~obsol_phd, ~Z, design = des) 
+confint(svyratio(~obsol_phd, ~Z, design = des))
 
 #What fraction of faculty have glasses in their Scholars photo? 
 svyratio(~obsol_glasses, ~V, design = des) 
-
+confint(svyratio(~obsol_glasses, ~V, design = des))
 ```
 
-The estimated fraction of faculty who are women is 0.48. The estimated standard error is 0.0414.
+The estimated fraction of faculty who are women is 0.48. The estimated standard error is 0.0414. The 95% confidence interval is (0.399, 0.561).
 
-The estimated fraction of faculty who have at least one grant that is ongoing in 2026 is 0.255. The estimated standard error is 0.030.
+The estimated fraction of faculty who have at least one grant that is ongoing in 2026 is 0.255. The estimated standard error is 0.030. The 95% confidence interval is (0.195, 0.314).
 
-Among faculty who have a Ph.D degree, the estimated average number of years since they received the Ph.D degree is 26.865. The estimated standard error is 1.367.
+Among faculty who have a Ph.D degree, the estimated average number of years since they received the Ph.D degree is 26.865. The estimated standard error is 1.367. The 95% confidence interval is (24.187, 29.5434).
 
-Among estimated fraction of faculty members who have glasses in their Scholars profile is 0.382. The estimated standard error is 0.0416.
+Among estimated fraction of faculty members who have glasses in their Scholars profile is 0.382. The estimated standard error is 0.0416. The 95% confidence interval is (0.301, 0.464).
 
 ## Conclusion
