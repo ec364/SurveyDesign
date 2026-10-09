@@ -210,4 +210,12 @@ svyratio(~obsol_glasses, ~V, design = des) #What fraction of faculty have glasse
 
 ```
 
+The estimated fraction of faculty who are women is 0.48. The estimated standard error is 0.0414.
+
+The estimated fraction of faculty who have at least one grant that is ongoing in 2026 is 0.255. The estimated standard error is 0.030.
+
+Among faculty who have a Ph.D degree, the estimated average number of years since they received the Ph.D degree is 26.865. The estimated standard error is 1.367.
+
+Among estimated fraction of faculty members who have glasses in their Scholars profile is 0.382. The estimated standard error is 0.0416.
+
 ## Conclusion
