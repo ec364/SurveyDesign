@@ -18,11 +18,13 @@ For this project, we chose to use stratified sampling. Let $h = 1, 2, 3$ index t
 -   $\pi_{hi}$: Probability that department or program $i$ in stratum $h$ is included in the sample.
 -   $w_{hi}$: Sampling weight assigned to each eligible faculty appointment in department or program $i$ of stratum $h$.
 
+**WHAT IS THE RELEVANCE OF DEFINING ALL THESE VARIABLES?**
+
 Prior to deciding on stratified sampling with proportional allocation, we considered other designs.
 
 1.  Cluster sampling with probability proportional to size - **WRITE *CONSIDERATIONS REASONS FOR REJECTIONS HERE.***
 2.  Simple Random Sampling - **WRITE *CONSIDERATIONS REASONS FOR REJECTIONS HERE.***
-3.  Stratified Sampling with optimal allocation -
+3.  Stratified Sampling with optimal allocation - This method determines the smallest variance for a desired sample size, but it also requires that we have $S_{h}$ values for each stratum, which we do not have access to prior to sampling. ***DEFINE S_h***
 
 Ultimately, stratified sampling gives the most accurate measurements considering our limitations. We decided we had the capacity to sample 125 faculty members. We used proportional allocation to decide the number of faculty to sample in each stratum.
 
