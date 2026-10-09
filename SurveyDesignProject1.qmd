@@ -200,13 +200,17 @@ des = svydesign(~1,
                 fpc = ~FPC_var, 
                 data = Clean_Project_1_Info)
 
-svymean(~Women, design = des) #What is an estimate of the fraction of faculty who are women? 
+#What is an estimate of the fraction of faculty who are women? 
+svymean(~Women, design = des) 
 
-svymean(~CurrentGrant, design = des) #What fraction of faculty have at least one grant that is ongoing in 2026?
+#What fraction of faculty have at least one grant that is ongoing in 2026?
+svymean(~CurrentGrant, design = des) 
 
-svyratio(~obsol_phd, ~Z, design = des) #Among faculty who have a Ph.D. degree, what is the average number of years since they received the Ph.D. degree?
+#Among faculty who have a Ph.D. degree, what is the average number of years since they received the Ph.D. degree?
+svyratio(~obsol_phd, ~Z, design = des) 
 
-svyratio(~obsol_glasses, ~V, design = des) #What fraction of faculty have glasses in their Scholars photo? 
+#What fraction of faculty have glasses in their Scholars photo? 
+svyratio(~obsol_glasses, ~V, design = des) 
 
 ```
 
