@@ -181,26 +181,17 @@ library(tidyverse)
 library(survey)
 
 #import the data 
-Project_1_Info <- read_csv("Project_1_Info - Sheet1.csv")
+Project_1_Info <- read_csv("Project_1_Info - Sheet1(1).csv") 
 
-#removing those who do not have phds or photos
-Project_1_Info_No_Phd_Photo <- Project_1_Info |> 
-  filter(YearsSincePhd != "R") |>
-  filter(GlassesOrNot != "R") |>
-  mutate(YearsSincePhd = as.numeric(YearsSincePhd),
-         GlassesOrNot = as.numeric(GlassesOrNot)) 
+#Adding in Indicator Variables for Missing Data 
+Clean_Project_1_Info <- Project_1_Info |> 
+  mutate(
+    Z = if_else(YearsSincePhd == 999, 0, 1),
+    V = if_else(GlassesOrNot == 999, 0, 1), 
+    obsol_phd = Z * YearsSincePhd,
+    obsol_glasses = V * GlassesOrNot
+  )
 
-#preliminary study that excludes those without phds or photos
-prelim_des = svydesign(~1, 
-                strat = ~Stratum,
-                weights = ~Weights,
-                fpc = ~FPC_var, 
-                data = Project_1_Info_No_Phd_Photo)
-
-svymean(~Women, design = prelim_des)
-svymean(~CurrentGrant, design = prelim_des)
-svymean(~YearsSincePhd, design = prelim_des)
-svymean(~GlassesOrNot, design = prelim_des)
 
 
 #use the code below when we have a clean dataset
@@ -209,15 +200,15 @@ des = svydesign(~1,
                 strat = ~Stratum,
                 weights = ~Weights,
                 fpc = ~FPC_var, 
-                data = Project_1_Info)
+                data = Clean_Project_1_Info)
 
 svymean(~Women, design = des) #What is an estimate of the fraction of faculty who are women? 
 
 svymean(~CurrentGrant, design = des) #What fraction of faculty have at least one grant that is ongoing in 2026?
 
-svymean(~YearsSincePhd, design = des) #Among faculty who have a Ph.D. degree, what is the average number of years since they received the Ph.D. degree?
+svyratio(~obsol_phd, ~Z, design = des) #Among faculty who have a Ph.D. degree, what is the average number of years since they received the Ph.D. degree?
 
-svymean(~GlassesOrNot, design = des) #What fraction of faculty have glasses in their Scholars photo? 
+svyratio(~obsol_glasses, ~V, design = des) #What fraction of faculty have glasses in their Scholars photo? 
 
 ```
 
