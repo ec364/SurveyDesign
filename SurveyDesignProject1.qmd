@@ -57,7 +57,7 @@ Our data collection process for collecting department/program-level measures of 
 
 Next, to take a simple random sample within each stratum, we assigned every faculty member in each stratum an index number. Index numbers were assigned sequentially and alphabetically for each department within a strata to help with indexing later on. For example in the Arts and Humanities stratum, the Arts, Art History & Visual Media Studies department appears first alphabetically, and their faculty members were indexed 1-44, the Writings and Rhetoric Program appears last alphabetically, and their faculty members were indexed 420-450 (out of 450 total faculty members in the Arts and Humanities stratum. Index increased from left to right, bottom to top on the department page. For the [Arts, Art History & Visual Media Studies department](https://scholars.duke.edu/organization/50000493/people), this meant Stanley Abe was 1, Mark Antliff was 2, and Carla M. Antonaccio was 3.This was done for all strata. A simple random sample was taken using the sample() function in r on a vector of numbers sequenced to the stratum population.
 
-## Preparing Data
+## Making Index Reference Tables
 
 ```{r}
 
@@ -149,7 +149,7 @@ knitr::kable(
 )
 ```
 
-Determining Numbers For Proportional Allocation and Deciding Faculty Indexes in Simple Random Sampling
+## Determining Proportional Allocation and Simple Random Sample
 
 ```{r}
 #figure out proportional allocation 
