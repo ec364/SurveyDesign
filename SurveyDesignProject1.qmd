@@ -6,34 +6,29 @@ editor: visual
 
 ## Introduction
 
-Our project aims to survey the the primary and joint faculty appointments across Trinity College. We excluded secondary and other types of appointments to maintain and consistent and stronger definition of departmental and program membership. We also want to note that this design choice means an individual could appear more than once if they have multiple primary or joint positions in Trinity College. We chose this method because we determined the time required to identify and resolve overlapping appointments would be substantial relative to the anticipated benefits for this project.
+Our project aims to survey the the primary and joint faculty appointments across Trinity College. We found information about faculty on the Scholars @ Duke Website and included only faculty listed under Primary & Joint Appointments. We excluded secondary and other types of appointments to maintain and consistent and stronger definition of departmental and program membership. We also want to note that this design choice means an individual could appear more than once if they have multiple primary or joint positions in Trinity College. We chose this method because we determined the time required to identify and resolve overlapping appointments would be substantial relative to the anticipated benefits for this project.
 
 ## Sampling Design
 
-Let $h = 1, 2, 3$ index the three strata, where $h = 1$ corresponds to Arts & Humanities, $h = 2$ to Natural Sciences, and $h = 3$ to Social Sciences. Within each stratum $h$, let $i = 1, \ldots, N_h$ index the departments and programs. We define the following notation:
+For this project, we chose to use stratified sampling. Let $h = 1, 2, 3$ index the three strata, where $h = 1$ corresponds to Arts & Humanities, $h = 2$ to Natural Sciences, and $h = 3$ to Social Sciences. We define the following notation:
 
--   $N_h$: Total number of departments and programs in stratum $h$.
--   $n_h$: Number of departments and programs sampled from stratum $h$.
--   $M_{hi}$: Number of primary and joint faculty appointments in department or program $i$ of stratum $h$.
--   $M_{h0} = \sum_{i=1}^{N_h} M_{hi}$: Total number of eligible faculty appointments in stratum $h$.
+-   $N_h$: Total number of faculty members in stratum $h$.
+-   $n_h$: Number of faculty members sampled from stratum $h$.
+-   $Y_{hi}$: Survey variable for faculty i in stratum i.
 -   $\pi_{hi}$: Probability that department or program $i$ in stratum $h$ is included in the sample.
 -   $w_{hi}$: Sampling weight assigned to each eligible faculty appointment in department or program $i$ of stratum $h$.
+
+Prior to deciding on stratified sampling with proportional allocation, we considered other designs.
+
+1.  Cluster sampling with probability proportional to size - **WRITE *CONSIDERATIONS REASONS FOR REJECTIONS HERE.***
+2.  Simple Random Sampling - **WRITE *CONSIDERATIONS REASONS FOR REJECTIONS HERE.***
+3.  Stratified Sampling with optimal allocation -
+
+Ultimately, stratified sampling gives the most accurate measurements considering our limitations. We decided we had the capacity to sample 125 faculty members. We used proportional allocation to decide the number of faculty to sample in each stratum.
 
 ```{r}
 
 dept_data <- read.csv("Project_1_Sizes.csv")
-
-dept_counts <- aggregate(
-  Primary__Joint_Faculty ~ Stratum,
-  data = dept_data,
-  FUN = length
-)
-
-N_ArtHum <- dept_counts$Primary__Joint_Faculty[dept_counts$Stratum == "ArtHum"]
-N_NatSci <- dept_counts$Primary__Joint_Faculty[dept_counts$Stratum == "NatSci"]
-N_SocSci <- dept_counts$Primary__Joint_Faculty[dept_counts$Stratum == "SocSci"]
-
-N <- N_ArtHum + N_NatSci + N_SocSci
 
 stratum_totals <- aggregate(
   Primary__Joint_Faculty ~ Stratum,
@@ -41,20 +36,24 @@ stratum_totals <- aggregate(
   FUN = sum
 )
 
-M_ArtHum0 <- stratum_totals$Primary__Joint_Faculty[stratum_totals$Stratum == "ArtHum"]
-M_NatSci0 <- stratum_totals$Primary__Joint_Faculty[stratum_totals$Stratum == "NatSci"]
-M_SocSci0 <- stratum_totals$Primary__Joint_Faculty[stratum_totals$Stratum == "SocSci"]
+N_ArtHum <- stratum_totals$Primary__Joint_Faculty[stratum_totals$Stratum == "ArtHum"]
+N_NatSci <- stratum_totals$Primary__Joint_Faculty[stratum_totals$Stratum == "NatSci"]
+N_SocSci <- stratum_totals$Primary__Joint_Faculty[stratum_totals$Stratum == "SocSci"]
 
-M <- M_ArtHum0 + M_NatSci0 + M_SocSci0
+N <- N_ArtHum + N_NatSci + N_SocSci
 ```
 
-We used a stratified simple random sample design with optimal allocation. We treated Trinity College's three academic divisions as strata and departments. Within each stratum, we know the total number of primary and joint appointments for each department and program. Thus, we can treat the sum of appointments for each stratum as an index from $1$ to \$\$\$
+We used a stratified simple random sample design with proportional allocation. We treated Trinity College's three academic divisions as strata and departments. Within each stratum, we know the total number of primary and joint appointments for each department and program. Thus, we can treat the sum of appointments for each stratum as an index from $1$ to \$\$\$
 
 ## Data Collection
 
 We first started by looking at the website for Trinity College of Arts and Science (<https://trinity.duke.edu/>). Here, they break down their departments and programs into three strata: Arts & Humanities, Natural Sciences (<https://trinity.duke.edu/natural-sciences>), and Social Sciences (<https://trinity.duke.edu/social-sciences>). We decided to include every listed department and program in our sampling frame. Psychology and Neuroscience is listed in both Natural Sciences and Social Science, but we decided to only list it as in Natural Sciences as strata must be mutually exclusive for our proposed design.
 
-Next, we will explain our data collection process for collecting department/program-level measures of size. From the Scholars\@Duke website, we went to the Schools/Institutes page (<https://scholars.duke.edu/organizations>). Here, there are links to the Scholars\@Duke pages for each department and program we recorded from the process above. Within these pages, there is a section for Primary & Joint Appointments that lists the faculty and total count. Here is an example page for the department of African and African American Studies: <https://scholars.duke.edu/organization/50413712/people>. The total listed on these webpages is what we used for the totals for each department and program's number of primary and joint faculty positions.
+**WE SHOULD WRITE ABOUT WHY THESE STRATAS ARE INTERESTING/WHAT MIGHT WE EXPECT FROM THEM FOR OUR SURVEY VARIABLES.**
+
+Our data collection process for collecting department/program-level measures of size is done from the Scholars\@Duke website. From the Scholars\@Duke website, we went to the Schools/Institutes page (<https://scholars.duke.edu/organizations>). Here, there are links to the Scholars\@Duke pages for each department and program we recorded from the process above. Within these pages, there is a section for Primary & Joint Appointments that lists the faculty and total count. Here is an example page for the department of African and African American Studies: <https://scholars.duke.edu/organization/50413712/people>. The total listed on these webpages is what we used for the totals for each department and program's number of primary and joint faculty positions.
+
+Next, to take a simple random sample within each stratum, we assigned every faculty member in each stratum an index number. Index numbers were assigned sequentially and alphabetically for each department within a strata to help with indexing later on. For example in the Arts and Humanities stratum, the Arts, Art History & Visual Media Studies department appears first alphabetically, and their faculty members were indexed 1-44, the Writings and Rhetoric Program appears last alphabetically, and their faculty members were indexed 420-450 (out of 450 total faculty members in the Arts and Humanities stratum. Index increased from left to right, bottom to top on the department page. For the [Arts, Art History & Visual Media Studies department](https://scholars.duke.edu/organization/50000493/people), this meant Stanley Abe was 1, Mark Antliff was 2, and Carla M. Antonaccio was 3.This was done for all strata. A simple random sample was taken using the sample() function in r on a vector of numbers sequenced to the stratum population.
 
 ## Preparing Data
 
@@ -148,7 +147,7 @@ knitr::kable(
 )
 ```
 
-Determining Numbers For Proportional Allocation and Deciding SRS
+Determining Numbers For Proportional Allocation and Deciding Faculty Indexes in Simple Random Sampling
 
 ```{r}
 #figure out proportional allocation 
@@ -159,7 +158,7 @@ n_ArtHum = n * 450 / 1153 #49
 n_NatSci = n * 421 / 1153 #46
 n_SocSci = n * 282 / 1153 #30 this one I rounded down so that integers add to 125
 
-#generating random numbers 
+#generating random numbers for SRS 
 
 sample(c(1:450), 49) |>
   sort() #for arts and humanities
@@ -170,3 +169,30 @@ sample(c(1:282), 30) |>
 
 
 ```
+
+## Results
+
+```{r, eval=FALSE}
+
+#importing packages
+library(survey)
+
+#import the data 
+
+des = svydesign(~1, 
+                strat = ~Stratum,
+                weights = ~Weights,
+                fpc = ~FPC_var, 
+                data = Project_1_Info)
+
+svymean(~Women, design = des) #What is an estimate of the fraction of faculty who are women? 
+
+svymean(~CurrentGrant, design = des) #What fraction of faculty have at least one grant that is ongoing in 2026?
+
+svymean(~YearsSincePhd, design = des) #Among faculty who have a Ph.D. degree, what is the average number of years since they received the Ph.D. degree?
+
+svymean(~GlassesOrNot, design = des) #What fraction of faculty have glasses in their Scholars photo? 
+
+```
+
+## Conclusion 
