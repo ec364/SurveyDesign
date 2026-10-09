@@ -192,9 +192,7 @@ Clean_Project_1_Info <- Project_1_Info |>
     obsol_glasses = V * GlassesOrNot
   )
 
-
-
-#use the code below when we have a clean dataset
+#Creating Survey
 
 des = svydesign(~1, 
                 strat = ~Stratum,
