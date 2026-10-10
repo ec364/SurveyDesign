@@ -1,5 +1,5 @@
 ---
-title: "Project1"
+title: "Project 1"
 subtitle: Erin Chen and Ricardo Urena
 format: pdf
 editor: visual
@@ -28,7 +28,7 @@ For this project, we chose to use stratified sampling. Let $h = 1, 2, 3$ index t
 -   $V_{hi}$: Indicator equal to 1 if glasses information is available for faculty appointment $i$ in stratum $h$, and 0 otherwise.
 -   $w_{hi} = \frac{1}{\pi_{hi}} = \frac{N_h}{n_h}$: Sampling weight for appointment $i$ in stratum $h$.
 
-We use a Horvitz Thompson Estimator to calculate estimates in our survey. For a stratified sample, the Horvitz Thompson Estimator for the mean is. This estimator is calculated for us using the survey package available in r.
+We use a Horvitz Thompson Estimator to calculate estimates in our survey. This estimator is calculated for us using the survey package available in r. For a stratified sample, the Horvitz Thompson Estimator for the mean is.
 
 $$
 \hat{\bar{Y}}_{\mathrm{HT}}
@@ -45,7 +45,7 @@ $$
 N_h\bar{y}_h
 $$
 
-For the years since PhD. and glasses variables, some observations had missing information, which we coded as 999. To exclude these observations from our estimates, we created the indicator variables $Z_{hi}$ and $V_{hi}$, as defined above. We then used the following ratio estimator:
+For the years since PhD and glasses variables, some observations had missing information, which we coded as 999. To exclude these observations from our estimates, we created the indicator variables $Z_{hi}$ and $V_{hi}$, as defined above. We then used the following ratio estimator:
 
 $$
 \hat{R} =
@@ -57,9 +57,10 @@ For the glasses variable, we follow the same approach just with $V_{hi}$. This a
 
 Prior to deciding on stratified sampling with proportional allocation, we considered other designs. Our primary goal was to design a survey that would estimate the fraction of faculty who were women accurately**.**
 
-1.  Cluster sampling with probability proportional to size - One of the advantages of cluster sampling is that it makes collecting data less expensive and time consuming. Since all of our data is online, there is no monetary cost to data collection and minimal time savings.
-2.  Simple Random Sampling - Stratified sampling with proportional allocation has a theoretical variance no greater than SRS for the same sample size. Additionally, we believ that the proportion of women may be different between strata.
-3.  Stratified Sampling with optimal allocation - This method determines the smallest variance for a desired sample size, but it also requires that we have sample variances for each stratum, which we do not have access to prior to sampling.
+1.  **One stage cluster sampling departments with probability proportional to size** - One of the advantages of cluster sampling is that it makes collecting data less expensive and time consuming. Since all of our data is online, there is no monetary cost to data collection and minimal time savings. In addition, cluster sampling tends to generate larger variances than simple random sampling and stratified sampling because capturing all the information from one group that's similar to each other is less informative than capturing information from people throughout the group. Since we believe that some departments male dominated (i.e Computer Science), if picked, they could pull the estimate down and decrease accuracy of sampling with this method.
+2.  **Simple Random Sampling** - Stratified sampling with proportional allocation has a theoretical variance no greater than SRS for the same sample size. Additionally, we believe that the proportion of women may be different between strata. When the units in stratum are more similar alike than across the population, stratified sampling gives lower variance compared to simple random sampling.
+3.  **Stratified Sampling Trinity College divisions with probability proportional to size department clusters** - This sampling strategy improves precision when departments with larger size is correlated with the outcomes we are estimating. We do not believe that size of departments is correlated with any of our outcomes.
+4.  **Stratified Sampling Trinity College divisions with optimal allocation** - This method determines the smallest variance for a desired sample size, but it also requires that we have sample variances for each stratum, which we do not have access to prior to sampling.
 
 Ultimately, stratified sampling gives the most accurate measurements considering our limitations. We decided we had the capacity to sample 125 faculty appointments. We used proportional allocation to decide the number of faculty to sample in each stratum.
 
@@ -73,14 +74,17 @@ stratum_totals <- aggregate(
   FUN = sum
 )
 
-N_ArtHum <- stratum_totals$Primary__Joint_Faculty[stratum_totals$Stratum == "ArtHum"]
-N_NatSci <- stratum_totals$Primary__Joint_Faculty[stratum_totals$Stratum == "NatSci"]
-N_SocSci <- stratum_totals$Primary__Joint_Faculty[stratum_totals$Stratum == "SocSci"]
+N_ArtHum <- 
+  stratum_totals$Primary__Joint_Faculty[stratum_totals$Stratum == "ArtHum"]
+N_NatSci <- 
+  stratum_totals$Primary__Joint_Faculty[stratum_totals$Stratum == "NatSci"]
+N_SocSci <- 
+  stratum_totals$Primary__Joint_Faculty[stratum_totals$Stratum == "SocSci"]
 
 N <- N_ArtHum + N_NatSci + N_SocSci
 ```
 
-We used a stratified simple random sample design with proportional allocation. We treated Trinity College's three academic divisions as strata and departments. Within each stratum, we know the total number of primary and joint appointments for each department and program. Thus, we can treat the sum of appointments for each stratum as an index from $1$ to $N_h$.
+Within each stratum, we know the total number of primary and joint appointments for each department and program. Thus, we can treat the sum of appointments for each stratum as an index from $1$ to $N_h$.
 
 ## Data Collection
 
@@ -90,9 +94,11 @@ We chose to stratify by the three academic divisions because we expect the propo
 
 Our data collection process for collecting department/program-level measures of size is done from the Scholars\@Duke website. From the Scholars\@Duke website, we went to the Schools/Institutes page (<https://scholars.duke.edu/organizations>). Here, there are links to the Scholars\@Duke pages for each department and program we recorded from the process above. Within these pages, there is a section for Primary & Joint Appointments that lists the faculty and total count. An example page for the department of [African and African American Studies](https://scholars.duke.edu/organization/50413712/people) is hyperlinked. The total listed on these webpages is what we used for the totals for each department and program's number of primary and joint faculty positions.
 
-Next, to take a simple random sample within each stratum, we assigned every faculty appointment in each stratum an index number. Index numbers were assigned sequentially and alphabetically for each department within a strata to help with indexing later on. For example in the Arts and Humanities stratum, the Arts, Art History & Visual Media Studies department appears first alphabetically, and their faculty appointments were indexed 1-44, the Writings and Rhetoric Program appears last alphabetically, and their faculty appointments were indexed 420-450 (out of 450 total faculty appointments in the Arts and Humanities stratum. Index increased from left to right, bottom to top on the department page. For the [Arts, Art History & Visual Media Studies department](https://scholars.duke.edu/organization/50000493/people), this meant Stanley Abe was 1, Mark Antliff was 2, and Carla M. Antonaccio was 3.This was done for all strata. A simple random sample was taken using the sample() function in r on a vector of numbers sequenced to the stratum population.
+Next, to take a simple random sample within each stratum, we assigned every faculty appointment in each stratum an index number. Index numbers were assigned sequentially and alphabetically for each department within a strata to help with indexing later on. For example in the Arts and Humanities stratum, the Arts, Art History & Visual Media Studies department appears first alphabetically, and their faculty appointments were indexed 1-44, the Writings and Rhetoric Program appears last alphabetically, and their faculty appointments were indexed 420-450 (out of 450 total faculty appointments in the Arts and Humanities stratum). Index increased from left to right, bottom to top on the department page. For the [Arts, Art History & Visual Media Studies department](https://scholars.duke.edu/organization/50000493/people), this meant Stanley Abe was 1, Mark Antliff was 2, and Carla M. Antonaccio was 3. This was done for all strata. A simple random sample was taken using the sample() function in r on a vector of numbers sequenced to the stratum population.
 
 Within our data frame, we included a column for the weights and population correction factor. These columns are needed for the survey package to calculate estimates. The weights are calculated as $\frac{1}{\pi_{hi}}$. The populations are equal to $N_{h}$.
+
+We used the information available on the Scholars website to determine sex for all faculty. We assumed that all faculty members with current grants had them listed on the website. Those without PhD information or a photo were coded as missing in our collection.
 
 ## Making Index Reference Tables
 
@@ -191,6 +197,8 @@ knitr::kable(
 In proportional allocation $\frac{n_{h}}{n} \approx \frac{N_{h}}{N}$. We plug in the known values to determine $n_{h}$.
 
 ```{r}
+#| include: false
+
 
 #import packages
 
@@ -200,12 +208,13 @@ library(survey)
 
 ```{r}
 #figure out proportional allocation 
+
 set.seed(314)
 
 n = 125 #number of people we are sampling
 n_ArtHum = n * 450 / 1153 #49 
 n_NatSci = n * 421 / 1153 #46
-n_SocSci = n * 282 / 1153 #30 this one I rounded down so that integers add to 125
+n_SocSci = n * 282 / 1153 #30 Rounded down so that integers add to 125
 
 #generating random numbers for SRS 
 
@@ -222,15 +231,12 @@ sample(c(1:282), 30) |>
 Our sampled data can be found here
 
 ```{r}
+#| echo: true
+#| message: false
+#| warning: false
+
 #import the data 
 Project_1_Info <- read_csv("Project_1_Info - Sheet1(1).csv") 
-```
-
-## Results
-
-```{r}
-#| include: false
-
 
 #Adding in Indicator Variables for Missing Data 
 Clean_Project_1_Info <- Project_1_Info |> 
@@ -240,6 +246,11 @@ Clean_Project_1_Info <- Project_1_Info |>
     obsol_phd = Z * YearsSincePhd,
     obsol_glasses = V * GlassesOrNot
   )
+```
+
+## Results
+
+```{r}
 
 #Creating Survey
 
@@ -257,7 +268,8 @@ confint(svymean(~Women, design = des))
 svymean(~CurrentGrant, design = des) 
 confint(svymean(~CurrentGrant, design = des))
 
-#Among faculty who have a PhD degree, what is the average number of years since they received the PhD degree?
+#Among faculty who have a PhD degree, 
+#what is the average number of years since they received the PhD degree?
 svyratio(~obsol_phd, ~Z, design = des) 
 confint(svyratio(~obsol_phd, ~Z, design = des))
 
@@ -275,3 +287,5 @@ Among faculty appointments who have a PhD degree, the estimated average number o
 Among estimated fraction of faculty appointments who have glasses in their Scholars profile is 0.382. The estimated standard error is 0.0416. The 95% confidence interval is (0.301, 0.464).
 
 ## Conclusion
+
+We answered questions related to characteristics of Duke faculty appointments using the information available on the Scholars at Duke website. We determined that a stratified, simple random sample was the most accurate design given our limitations. In analyzing this survey, we learned that the estimated percentage of faculty appointments who are women is 48%, the estimated percentage of faculty appointments who have one ongoing grant is 25.5%, the average number of years since a faculty with a PhD received their degree is 26.7 years, and the estimated percentage of faculty appointments who have glasses is 38.2%.
