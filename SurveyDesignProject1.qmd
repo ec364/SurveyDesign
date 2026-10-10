@@ -5,6 +5,13 @@ format: pdf
 editor: visual
 ---
 
+```{r}
+#| include: false
+
+
+library(tidyverse)
+```
+
 ## Introduction
 
 Our project aims to survey the the primary and joint faculty appointments across Trinity College. We found information about faculty on the Scholars \@ Duke Website and included only faculty listed under Primary & Joint Appointments. We excluded secondary and other types of appointments to maintain and consistent and stronger definition of departmental and program membership. We also want to note that this design choice means an individual could appear more than once if they have multiple primary or joint positions in Trinity College. We chose this method because we determined the time required to identify and resolve overlapping appointments would be substantial relative to the anticipated benefits for this project.
@@ -46,8 +53,8 @@ $$
 
 Prior to deciding on stratified sampling with proportional allocation, we considered other designs. Our primary goal was to design a survey that would estimate the fraction of faculty who were women accurately**.**
 
-1.  Cluster sampling with probability proportional to size - **WRITE *CONSIDERATIONS REASONS FOR REJECTIONS HERE.***
-2.  Simple Random Sampling - Stratified sampling offers greater precision than simple random sampling given the same sample size, given that the stratas are more alike than units across a population.
+1.  Cluster sampling with probability proportional to size - One of the advantages of cluster sampling is that it makes collecting data less expensive and time consuming. Since all of our data is online, there is no monetary cost to data collection and minimal time savings.
+2.  Simple Random Sampling - Stratified sampling with proportional allocation has a theoretical variance no greater than SRS for the same sample size. Additionally, we believ that the proportion of women may be different between strata.
 3.  Stratified Sampling with optimal allocation - This method determines the smallest variance for a desired sample size, but it also requires that we have sample variances for each stratum, which we do not have access to prior to sampling.
 
 Ultimately, stratified sampling gives the most accurate measurements considering our limitations. We decided we had the capacity to sample 125 faculty members. We used proportional allocation to decide the number of faculty to sample in each stratum.
@@ -75,7 +82,7 @@ We used a stratified simple random sample design with proportional allocation. W
 
 We first started by looking at the website for Trinity College of Arts and Science (<https://trinity.duke.edu/>). Here, they break down their departments and programs into three strata: Arts & Humanities, Natural Sciences (<https://trinity.duke.edu/natural-sciences>), and Social Sciences (<https://trinity.duke.edu/social-sciences>). We decided to include every listed department and program in our sampling frame. Psychology and Neuroscience is listed in both Natural Sciences and Social Science, but we decided to only list it as in Natural Sciences as strata must be mutually exclusive for our proposed design.
 
-**WE SHOULD WRITE ABOUT WHY THESE STRATAS ARE INTERESTING/WHAT MIGHT WE EXPECT FROM THEM FOR OUR SURVEY VARIABLES.**
+We chose to stratify by the three academic divisions because we expect the proportion of faculty who are women to differ across these divisions. By stratifying on these groups, we hope to reduce the variability within each stratum relative to the variability across the entire faculty population. This could improve the precision of our estimate of the overall proportion of faculty who are women compared to simple random sampling.
 
 Our data collection process for collecting department/program-level measures of size is done from the Scholars\@Duke website. From the Scholars\@Duke website, we went to the Schools/Institutes page (<https://scholars.duke.edu/organizations>). Here, there are links to the Scholars\@Duke pages for each department and program we recorded from the process above. Within these pages, there is a section for Primary & Joint Appointments that lists the faculty and total count. Here is an example page for the department of African and African American Studies: <https://scholars.duke.edu/organization/50413712/people>. The total listed on these webpages is what we used for the totals for each department and program's number of primary and joint faculty positions.
 
