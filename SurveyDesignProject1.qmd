@@ -107,8 +107,11 @@ We used the information available on the Scholars website to determine sex for a
 
 ```{r}
 
-# Assign sequential index ranges to each Arts & Humanities department based on its number of faculty appointments.
-# Create and display table showing each department's faculty count and corresponding index range.
+# Assign sequential index ranges to each Arts & Humanities department 
+# based on its number of faculty appointments.
+
+# Create and display table showing each department's faculty count 
+# and corresponding index range.
 
 ArtHum <- subset(dept_data, Stratum == "ArtHum")
 
