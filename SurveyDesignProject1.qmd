@@ -44,11 +44,11 @@ $$
 
 **WRITE ABOUT THE RATIO FOR MISSING DATA?**
 
-Prior to deciding on stratified sampling with proportional allocation, we considered other designs. Our primary goal was to **ADD PRIMARY GOALS.**
+Prior to deciding on stratified sampling with proportional allocation, we considered other designs. Our primary goal was to design a survey that would estimate the fraction of faculty who were women accurately**.**
 
 1.  Cluster sampling with probability proportional to size - **WRITE *CONSIDERATIONS REASONS FOR REJECTIONS HERE.***
-2.  Simple Random Sampling - **WRITE *CONSIDERATIONS REASONS FOR REJECTIONS HERE.***
-3.  Stratified Sampling with optimal allocation - This method determines the smallest variance for a desired sample size, but it also requires that we have $S_{h}$ values for each stratum, which we do not have access to prior to sampling. ***DEFINE S_h***
+2.  Simple Random Sampling - Stratified sampling offers greater precision than simple random sampling given the same sample size, given that the stratas are more alike than units across a population.
+3.  Stratified Sampling with optimal allocation - This method determines the smallest variance for a desired sample size, but it also requires that we have sample variances for each stratum, which we do not have access to prior to sampling.
 
 Ultimately, stratified sampling gives the most accurate measurements considering our limitations. We decided we had the capacity to sample 125 faculty members. We used proportional allocation to decide the number of faculty to sample in each stratum.
 
