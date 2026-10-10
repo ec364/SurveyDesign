@@ -5,13 +5,6 @@ format: pdf
 editor: visual
 ---
 
-```{r}
-#| include: false
-
-
-library(tidyverse)
-```
-
 ## Introduction
 
 Our project aims to survey the the primary and joint faculty appointments across Trinity College. We found information about faculty on the Scholars \@ Duke Website and included only faculty listed under Primary & Joint Appointments. We excluded secondary and other types of appointments to maintain and consistent and stronger definition of departmental and program membership. We also want to note that this design choice means an individual could appear more than once if they have multiple primary or joint positions in Trinity College. We chose this method because we determined the time required to identify and resolve overlapping appointments would be substantial relative to the anticipated benefits for this project.
@@ -20,17 +13,20 @@ Our project aims to survey the the primary and joint faculty appointments across
 
 For this project, we chose to use stratified sampling. Let $h = 1, 2, 3$ index the three strata, where $h = 1$ corresponds to Arts & Humanities, $h = 2$ to Natural Sciences, and $h = 3$ to Social Sciences. We define the following notation:
 
--   $N_h$: Total number of faculty members in stratum $h$.
--   $n_h$: Number of faculty members sampled from stratum $h$.
--   $N$: Total number of faculty members in population
+-   $N_h$: Total number of faculty appointments in stratum $h$.
+-   $n_h$: Number of faculty appointments sampled from stratum $h$.
+-   $N$: Total number of faculty appointments in population
 -   $H$: Total number of stratum, 3.
--   $Y_{hi}$: Survey variable for faculty i in stratum i.
--   $y_{hi}$: Sampled survey variable for faculty i in stratum i.
+-   $Y_{hi}$: Survey variable for faculty appointment i in stratum i.
+-   $y_{hi}$: Sampled survey variable for faculty appointment i in stratum i.
 -   $t_{hy}$ = $\sum_{i=1}^{N_{h}}Y_{hi}$, total in stratum $h$.
 -   $\bar{Y_{h}}$ = population mean in stratum h.
 -   $\bar{y_{h}}$ = sample mean in stratum h.
--   $t_{y}$ is population total
--   $\pi_{hi}$= $\frac{n_{h}}{N_{h}}$, probability that faculty $i$ in stratum $h$ is included in the sample
+-   $t_{y}$: population total
+-   $\pi_{hi}$= $\frac{n_{h}}{N_{h}}$, probability that faculty appointment $i$ in stratum $h$ is included in the sample
+-   $Z_{hi}$: Indicator equal to 1 if years since PhD information is available for faculty appointment $i$ in stratum $h$, and 0 otherwise.
+-   $V_{hi}$: Indicator equal to 1 if glasses information is available for faculty appointment $i$ in stratum $h$, and 0 otherwise.
+-   $w_{hi} = \frac{1}{\pi_{hi}} = \frac{N_h}{n_h}$: Sampling weight for appointment $i$ in stratum $h$.
 
 We use a Horvitz Thompson Estimator to calculate estimates in our survey. For a stratified sample, the Horvitz Thompson Estimator for the mean is. This estimator is calculated for us using the survey package available in r.
 
@@ -49,7 +45,15 @@ $$
 N_h\bar{y}_h
 $$
 
-**WRITE ABOUT THE RATIO FOR MISSING DATA?**
+For the years since PhD. and glasses variables, some observations had missing information, which we coded as 999. To exclude these observations from our estimates, we created the indicator variables $Z_{hi}$ and $V_{hi}$, as defined above. We then used the following ratio estimator:
+
+$$
+\hat{R} =
+\frac{\displaystyle\sum_{h=1}^{H}\sum_{i=1}^{n_h} w_{hi}Z_{hi}Y_{hi}}
+{\displaystyle\sum_{h=1}^{H}\sum_{i=1}^{n_h} w_{hi}Z_{hi}}
+$$
+
+For the glasses variable, we follow the same approach just with $V_{hi}$. This approach allows us to calculate estimates using only observations with available information.
 
 Prior to deciding on stratified sampling with proportional allocation, we considered other designs. Our primary goal was to design a survey that would estimate the fraction of faculty who were women accurately**.**
 
@@ -57,7 +61,7 @@ Prior to deciding on stratified sampling with proportional allocation, we consid
 2.  Simple Random Sampling - Stratified sampling with proportional allocation has a theoretical variance no greater than SRS for the same sample size. Additionally, we believ that the proportion of women may be different between strata.
 3.  Stratified Sampling with optimal allocation - This method determines the smallest variance for a desired sample size, but it also requires that we have sample variances for each stratum, which we do not have access to prior to sampling.
 
-Ultimately, stratified sampling gives the most accurate measurements considering our limitations. We decided we had the capacity to sample 125 faculty members. We used proportional allocation to decide the number of faculty to sample in each stratum.
+Ultimately, stratified sampling gives the most accurate measurements considering our limitations. We decided we had the capacity to sample 125 faculty appointments. We used proportional allocation to decide the number of faculty to sample in each stratum.
 
 ```{r}
 
@@ -76,7 +80,7 @@ N_SocSci <- stratum_totals$Primary__Joint_Faculty[stratum_totals$Stratum == "Soc
 N <- N_ArtHum + N_NatSci + N_SocSci
 ```
 
-We used a stratified simple random sample design with proportional allocation. We treated Trinity College's three academic divisions as strata and departments. Within each stratum, we know the total number of primary and joint appointments for each department and program. Thus, we can treat the sum of appointments for each stratum as an index from $1$ to \$\$\$
+We used a stratified simple random sample design with proportional allocation. We treated Trinity College's three academic divisions as strata and departments. Within each stratum, we know the total number of primary and joint appointments for each department and program. Thus, we can treat the sum of appointments for each stratum as an index from $1$ to $N_h$.
 
 ## Data Collection
 
@@ -84,9 +88,9 @@ We first started by looking at the website for Trinity College of Arts and Scien
 
 We chose to stratify by the three academic divisions because we expect the proportion of faculty who are women to differ across these divisions. By stratifying on these groups, we hope to reduce the variability within each stratum relative to the variability across the entire faculty population. This could improve the precision of our estimate of the overall proportion of faculty who are women compared to simple random sampling.
 
-Our data collection process for collecting department/program-level measures of size is done from the Scholars\@Duke website. From the Scholars\@Duke website, we went to the Schools/Institutes page (<https://scholars.duke.edu/organizations>). Here, there are links to the Scholars\@Duke pages for each department and program we recorded from the process above. Within these pages, there is a section for Primary & Joint Appointments that lists the faculty and total count. Here is an example page for the department of African and African American Studies: <https://scholars.duke.edu/organization/50413712/people>. The total listed on these webpages is what we used for the totals for each department and program's number of primary and joint faculty positions.
+Our data collection process for collecting department/program-level measures of size is done from the Scholars\@Duke website. From the Scholars\@Duke website, we went to the Schools/Institutes page (<https://scholars.duke.edu/organizations>). Here, there are links to the Scholars\@Duke pages for each department and program we recorded from the process above. Within these pages, there is a section for Primary & Joint Appointments that lists the faculty and total count. An example page for the department of [African and African American Studies](https://scholars.duke.edu/organization/50413712/people) is hyperlinked. The total listed on these webpages is what we used for the totals for each department and program's number of primary and joint faculty positions.
 
-Next, to take a simple random sample within each stratum, we assigned every faculty member in each stratum an index number. Index numbers were assigned sequentially and alphabetically for each department within a strata to help with indexing later on. For example in the Arts and Humanities stratum, the Arts, Art History & Visual Media Studies department appears first alphabetically, and their faculty members were indexed 1-44, the Writings and Rhetoric Program appears last alphabetically, and their faculty members were indexed 420-450 (out of 450 total faculty members in the Arts and Humanities stratum. Index increased from left to right, bottom to top on the department page. For the [Arts, Art History & Visual Media Studies department](https://scholars.duke.edu/organization/50000493/people), this meant Stanley Abe was 1, Mark Antliff was 2, and Carla M. Antonaccio was 3.This was done for all strata. A simple random sample was taken using the sample() function in r on a vector of numbers sequenced to the stratum population.
+Next, to take a simple random sample within each stratum, we assigned every faculty appointment in each stratum an index number. Index numbers were assigned sequentially and alphabetically for each department within a strata to help with indexing later on. For example in the Arts and Humanities stratum, the Arts, Art History & Visual Media Studies department appears first alphabetically, and their faculty appointments were indexed 1-44, the Writings and Rhetoric Program appears last alphabetically, and their faculty appointments were indexed 420-450 (out of 450 total faculty appointments in the Arts and Humanities stratum. Index increased from left to right, bottom to top on the department page. For the [Arts, Art History & Visual Media Studies department](https://scholars.duke.edu/organization/50000493/people), this meant Stanley Abe was 1, Mark Antliff was 2, and Carla M. Antonaccio was 3.This was done for all strata. A simple random sample was taken using the sample() function in r on a vector of numbers sequenced to the stratum population.
 
 Within our data frame, we included a column for the weights and population correction factor. These columns are needed for the survey package to calculate estimates. The weights are calculated as $\frac{1}{\pi_{hi}}$. The populations are equal to $N_{h}$.
 
@@ -187,6 +191,14 @@ knitr::kable(
 In proportional allocation $\frac{n_{h}}{n} \approx \frac{N_{h}}{N}$. We plug in the known values to determine $n_{h}$.
 
 ```{r}
+
+#import packages
+
+library(tidyverse)
+library(survey)
+```
+
+```{r}
 #figure out proportional allocation 
 set.seed(314)
 
@@ -216,11 +228,9 @@ Project_1_Info <- read_csv("Project_1_Info - Sheet1(1).csv")
 
 ## Results
 
-```{r, eval=FALSE}
+```{r}
+#| include: false
 
-#importing packages
-library(tidyverse)
-library(survey)
 
 #Adding in Indicator Variables for Missing Data 
 Clean_Project_1_Info <- Project_1_Info |> 
@@ -247,7 +257,7 @@ confint(svymean(~Women, design = des))
 svymean(~CurrentGrant, design = des) 
 confint(svymean(~CurrentGrant, design = des))
 
-#Among faculty who have a Ph.D. degree, what is the average number of years since they received the Ph.D. degree?
+#Among faculty who have a PhD degree, what is the average number of years since they received the PhD degree?
 svyratio(~obsol_phd, ~Z, design = des) 
 confint(svyratio(~obsol_phd, ~Z, design = des))
 
@@ -256,12 +266,12 @@ svyratio(~obsol_glasses, ~V, design = des)
 confint(svyratio(~obsol_glasses, ~V, design = des))
 ```
 
-The estimated fraction of faculty who are women is 0.48. The estimated standard error is 0.0414. The 95% confidence interval is (0.399, 0.561).
+The estimated fraction of faculty appointments who are women is 0.48. The estimated standard error is 0.0414. The 95% confidence interval is (0.399, 0.561).
 
-The estimated fraction of faculty who have at least one grant that is ongoing in 2026 is 0.255. The estimated standard error is 0.030. The 95% confidence interval is (0.195, 0.314).
+The estimated fraction of faculty appointments who have at least one grant that is ongoing in 2026 is 0.255. The estimated standard error is 0.030. The 95% confidence interval is (0.195, 0.314).
 
-Among faculty who have a Ph.D degree, the estimated average number of years since they received the Ph.D degree is 26.865. The estimated standard error is 1.367. The 95% confidence interval is (24.187, 29.5434).
+Among faculty appointments who have a PhD degree, the estimated average number of years since they received the PhD degree is 26.865. The estimated standard error is 1.367. The 95% confidence interval is (24.187, 29.5434).
 
-Among estimated fraction of faculty members who have glasses in their Scholars profile is 0.382. The estimated standard error is 0.0416. The 95% confidence interval is (0.301, 0.464).
+Among estimated fraction of faculty appointments who have glasses in their Scholars profile is 0.382. The estimated standard error is 0.0416. The 95% confidence interval is (0.301, 0.464).
 
 ## Conclusion
